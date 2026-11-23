@@ -16,6 +16,8 @@ jobs:
             python: "3.9"
           - os: ubuntu-22.04
             python: "3.12"
+          - os: windows-latest
+            python: "3.12"
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -25,6 +27,21 @@ jobs:
         run: python -m py_compile m6media.py
       - name: Unit tests
         run: python -m unittest discover -s tests -v
+
+  smoke-windows:
+    name: smoke (windows, py3.12)
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install ffmpeg
+        run: |
+          choco install ffmpeg -y --no-progress
+          echo "C:\ProgramData\chocolatey\bin" >> $env:GITHUB_PATH
+      - name: Smoke test
+        run: python tests/smoke_test.py
 
   smoke:
     name: smoke (ubuntu, py3.12)

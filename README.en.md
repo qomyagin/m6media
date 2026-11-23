@@ -8,6 +8,7 @@
 flash drive?** The container may be supported while the codec is not. This
 CLI converts only the incompatible files to **H.264 Main@4.0 + AAC-LC in
 MP4**, prepares music/photos, and leaves files that already work untouched.
+Runs on macOS, Linux, and Windows.
 
 Russian manual: [README.md](README.md).  
 Compatibility matrix: [docs/COMPATIBILITY.md](docs/COMPATIBILITY.md).  
@@ -36,16 +37,28 @@ Requirements: Python 3.9+ and `ffmpeg`/`ffprobe` with `libx264`, `aac`,
 ```bash
 # macOS
 brew install ffmpeg
+# Ubuntu / Debian
+sudo apt install ffmpeg
+# Windows (PowerShell)
+winget install Gyan.FFmpeg
 
 # see what would happen (no writes)
 ./m6media.py /Volumes/USB --diagnose
+# Linux: ./m6media.py /media/$USER/USB --diagnose
+# Windows: py -3 m6media.py E:\ --diagnose
 
 # convert only incompatible files into /Volumes/USB/M6
 ./m6media.py /Volumes/USB
+# Windows: py -3 m6media.py E:\
 
 # verify the result
 ./m6media.py /Volumes/USB/M6 --check-only
+# Windows: py -3 m6media.py E:\M6 --check-only
 ```
+
+Optional ImageMagick improves HEIC/RAW support on Linux/Windows:
+`sudo apt install imagemagick` or `winget install ImageMagick.ImageMagick`.
+On macOS `sips` is built in.
 
 Default output is `M6` next to the input. Existing targets are skipped with
 a printed reason; `--force` overwrites them. Files that already work are

@@ -1,7 +1,8 @@
 # Architecture
 
 `m6media.py` is intentionally one file. It has no third-party Python
-dependencies: only `ffmpeg`, `ffprobe`, and optionally macOS `sips`.
+dependencies: only `ffmpeg`, `ffprobe`, and optionally `sips` (macOS) or
+ImageMagick `magick` (Windows/Linux; HEIC/RAW).
 
 ## Goals and non-goals
 
@@ -174,10 +175,12 @@ A single failing file does not abort the batch. `execute_item()` catches
 
 * Unit tests construct `StreamInfo`, `MediaInfo`, `PlanItem`, and `Ctx`
   directly; no ffmpeg or media files needed.
-* `tests/smoke_test.sh` generates 2-second `lavfi` clips and exercises the
-  default skip, transcode, check, rerun-skip, and `--force` paths.
-* CI runs unit tests on Linux Python 3.9/3.12 and the smoke test on
-  Ubuntu with ffmpeg. macOS is tested locally with `sips`.
+* `tests/smoke_test.py` is cross-platform: it generates 2-second `lavfi`
+  clips and exercises the default skip, transcode, check, rerun-skip, and
+  `--force` paths on Windows, Linux, and macOS.
+* CI runs unit tests on Ubuntu Python 3.9/3.12 and Windows Python 3.12; the
+  smoke test runs on Ubuntu and Windows with ffmpeg. macOS is tested locally
+  with `sips`.
 
 ## Extension points
 

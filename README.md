@@ -11,8 +11,8 @@
 > MP4 и не трогает то, что уже работает.
 
 Скрипт готовит видео, музыку и фото для мультимедиа Haval M6 (M6 Plus,
-российское издание 2023–2026) и объясняет, почему конкретный файл не
-показывается.
+российское издание 2023–2026), объясняет, почему конкретный файл не
+показывается, и работает на **macOS, Linux и Windows**.
 
 Проверено на реальной **exFAT-флешке** и реальных файлах: AVI/XviD не
 отображались, MKV/H.264 работали. Подробный разбор — в разделе
@@ -151,11 +151,14 @@ exFAT тут ни при чём: рабочие файлы тоже могут �
 
 ## Установка
 
-Скрипт лежит в этой папке; сделайте его исполняемым:
+Скрипт лежит в этой папке. На macOS/Linux сделайте его исполняемым:
 
 ```bash
 chmod +x m6media.py
 ```
+
+На Windows `chmod` не нужен — запускайте через `py -3 m6media.py` или
+`python m6media.py`.
 
 Нужны Python 3.9+ и ffmpeg с `libx264`, `aac`, `libmp3lame`.
 
@@ -163,6 +166,8 @@ chmod +x m6media.py
 
 ```bash
 brew install ffmpeg
+# опционально, для HEIC/RAW без sips:
+brew install imagemagick
 ```
 
 Проверка:
@@ -187,16 +192,21 @@ brew install ffmpeg-full
 ```bash
 sudo apt install ffmpeg       # Debian/Ubuntu
 sudo dnf install ffmpeg       # Fedora
+# опционально, для HEIC/RAW:
+sudo apt install imagemagick
 ```
 
 ### Windows
 
 ```powershell
 winget install Gyan.FFmpeg
+# опционально, для HEIC/RAW:
+winget install ImageMagick.ImageMagick
 ```
 
 Скрипт сам ищет `ffmpeg` в `PATH`, `/opt/homebrew/bin`, `/usr/local/bin`,
-`/usr/bin`. Можно указать явно: `--ffmpeg PATH`, `--ffprobe PATH`.
+`C:\ffmpeg\bin`, `C:\Program Files\ffmpeg\bin`, Chocolatey/WinGet.
+Можно указать явно: `--ffmpeg PATH`, `--ffprobe PATH`.
 
 ---
 
@@ -204,9 +214,20 @@ winget install Gyan.FFmpeg
 
 ### 1. Диагностика флешки (ничего не пишет)
 
+macOS/Linux:
+
 ```bash
 python3 m6media.py /Volumes/USB --diagnose
+# Linux: python3 m6media.py /media/$USER/USB --diagnose
 ```
+
+Windows (PowerShell, флешка `E:`):
+
+```powershell
+py -3 m6media.py E:\ --diagnose
+```
+
+На Windows путь к флешке — буква диска (`E:\`), выход будет `E:\M6`.
 
 Скрипт покажет по каждому файлу: контейнер, кодеки, разрешение, звук,
 действие и причину. Это лучший способ понять, почему файл не виден.
@@ -215,6 +236,18 @@ python3 m6media.py /Volumes/USB --diagnose
 
 ```bash
 python3 m6media.py /Volumes/USB
+```
+
+Windows:
+
+```powershell
+py -3 m6media.py E:\
+```
+
+Linux:
+
+```bash
+python3 m6media.py /media/$USER/USB
 ```
 
 И всё. Папка `M6` создастся рядом с исходниками — на той же флешке.
@@ -270,6 +303,7 @@ MKV останутся на месте и не будут продублиров
 
 ```bash
 python3 m6media.py /Volumes/USB/M6 --check-only
+# Windows: py -3 m6media.py E:\M6 --check-only
 ```
 
 ### 4. Локальная подготовка (потом скопировать на флешку)
@@ -618,6 +652,7 @@ python3 m6media.py "файл" --diagnose
 make check    # py_compile + unit-тесты, ffmpeg не нужен
 make test     # только unit-тесты
 make smoke    # end-to-end на синтетических 2-секундных клипах, нужен ffmpeg
+# Windows: py -3 tests/smoke_test.py
 ```
 
 `pyproject.toml` позволяет установить CLI как `m6media`:

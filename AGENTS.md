@@ -13,6 +13,7 @@ Haval M6 (2023 / M6 Plus, Russian edition 2023–2026):
 * video → MP4 (or MKV) with H.264 Main@4.0, AAC-LC stereo;
 * music → MP3 (or AAC/M4A) with ID3v2.3;
 * photos → JPEG, downscaled to 1920 px;
+* runs on macOS, Linux, and Windows (native drive-letter / mount handling);
 * incompatible video can be split into < 4 GiB parts for FAT32;
 * a manifest (`_m6media/manifest.json`) and optional verification are written.
 
@@ -44,7 +45,8 @@ is a product requirement.
    profile and only audio/container is incompatible, use `copy-video` /
    `remux`; never re-encode video just for convenience.
 7. **No new runtime dependencies** outside Python stdlib + `ffmpeg`/`ffprobe`.
-   `sips` is optional and macOS-only.
+   `sips` (macOS) and ImageMagick `magick` (Windows/Linux) are optional
+   image fallbacks.
 8. **Python 3.9 compatibility.** `from __future__ import annotations` is used;
    avoid `match`, `tomllib`, `str.removeprefix`, and PEP 604 unions.
 9. **No network access** in code or tests.
@@ -58,7 +60,7 @@ Required for actual conversion:
 
 Optional:
 
-* `sips` on macOS for HEIC/RAW photos;
+* `sips` on macOS or ImageMagick (`magick`) on any OS for HEIC/RAW photos;
 * `ffmpeg-full` (`libass`, `zscale`) for `--burn-subs` and `--tonemap`.
 
 Unit tests **must not** require ffmpeg. The smoke test does.
@@ -84,9 +86,11 @@ make smoke
 
 # dry-run on a folder (no writes)
 ./m6media.py /Volumes/USB --dry-run
+# Windows: py -3 m6media.py E:\ --dry-run
 
 # normal run
 ./m6media.py /Volumes/USB
+# Windows: py -3 m6media.py E:\
 ```
 
 The version is duplicated in `m6media.py` (`APP_VERSION`) and
@@ -98,7 +102,7 @@ The version is duplicated in `m6media.py` (`APP_VERSION`) and
 |---|---|
 | `m6media.py` | entire CLI: probe, plan, ffmpeg commands, execution, manifest, checks |
 | `tests/test_m6media.py` | unit tests for naming, compatibility, planning, default skip, output defaults |
-| `tests/smoke_test.sh` | synthetic end-to-end test with ffmpeg |
+| `tests/smoke_test.py` | synthetic end-to-end test with ffmpeg |
 | `docs/ARCHITECTURE.md` | pipeline, data model, action names, exit codes |
 | `docs/COMPATIBILITY.md` | codec/container matrix and symptom → fix table |
 | `docs/SEO.md` | GitHub description/topics and discovery notes |

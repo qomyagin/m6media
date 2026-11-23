@@ -43,7 +43,7 @@ from pathlib import Path
 from typing import Optional
 
 APP_NAME = "m6media"
-APP_VERSION = "1.2.0"
+APP_VERSION = "1.3.0"
 
 # ---------------------------------------------------------------------------
 # Константы
@@ -196,7 +196,7 @@ def run_cmd(cmd: list[str], timeout: Optional[float] = None) -> subprocess.Compl
     try:
         return subprocess.run(
             cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-            text=True, errors="replace", timeout=timeout,
+            text=True, encoding="utf-8", errors="replace", timeout=timeout,
         )
     except FileNotFoundError as exc:
         raise M6Error(f"не найден исполняемый файл: {cmd[0]}") from exc
@@ -218,7 +218,15 @@ def find_tool(name: str, explicit: Optional[str]) -> Optional[str]:
         f"/opt/local/bin/{name}", f"/snap/bin/{name}",
     ]
     if os.name == "nt":
-        candidates = [rf"C:\ffmpeg\bin\{name}.exe"]
+        exe = name if name.lower().endswith(".exe") else f"{name}.exe"
+        local = os.environ.get("LOCALAPPDATA", "")
+        programdata = os.environ.get("ProgramData", "")
+        candidates = [
+            rf"C:\ffmpeg\bin\{exe}",
+            rf"C:\Program Files\ffmpeg\bin\{exe}",
+            rf"{programdata}\chocolatey\bin\{exe}",
+            rf"{local}\Microsoft\WinGet\Links\{exe}",
+        ]
     for candidate in candidates:
         if os.path.isfile(candidate) and os.access(candidate, os.X_OK):
             return candidate
@@ -565,6 +573,7 @@ class Ctx:
     has_zscale: bool = False
     has_subtitles_filter: bool = False
     sips: Optional[str] = None
+    magick: Optional[str] = None
     ffmpeg_version: str = ""
     ffmpeg_major: int = 0
     fs_name: str = ""
@@ -1232,7 +1241,7 @@ def run_ffmpeg(cmd: list, duration: float, ctx: Ctx, label: str) -> None:
     ctx.log.debug("RUN: %s", " ".join(cmd))
     proc = subprocess.Popen(
         cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-        text=True, bufsize=1,
+        text=True, encoding="utf-8", errors="replace", bufsize=1,
     )
     stderr_lines = []
 
@@ -1479,7 +1488,27 @@ def convert_image(item: PlanItem, ctx: Ctx) -> int:
         if cp.returncode == 0 and tmp.is_file() and tmp.stat().st_size > 0:
             os.replace(tmp, out)
             return out.stat().st_size
-        errors.append((cp.stderr or "").strip().splitlines()[-1:] or ["sips failed"])
+        ctx.log.debug(
+            "sips failed: %s",
+            (cp.stderr or "").strip().splitlines()[-1:] or "unknown error",
+        )
+        tmp.unlink(missing_ok=True)
+
+    # ImageMagick (Windows/Linux) — понимает HEIC/RAW при установленных
+    # делегатах и не требует знания размеров: ">" не увеличивает картинку.
+    if ctx.magick:
+        cmd = [ctx.magick, str(item.src), "-auto-orient"]
+        if ctx.args.photo_max > 0:
+            cmd += ["-resize", f"{ctx.args.photo_max}x{ctx.args.photo_max}>"]
+        cmd += ["-quality", str(ctx.args.photo_quality), str(tmp)]
+        cp = run_cmd(cmd, timeout=180)
+        if cp.returncode == 0 and tmp.is_file() and tmp.stat().st_size > 0:
+            os.replace(tmp, out)
+            return out.stat().st_size
+        ctx.log.debug(
+            "ImageMagick failed: %s",
+            (cp.stderr or "").strip().splitlines()[-1:] or "unknown error",
+        )
         tmp.unlink(missing_ok=True)
 
     # Запасной вариант — ffmpeg. HEIC/RAW он может не понять.
@@ -1963,7 +1992,15 @@ def has_output_media(output: Path) -> bool:
 
 
 def find_mount_point(path: Path) -> Path:
-    current = path.resolve()
+    try:
+        resolved = path.expanduser().resolve()
+    except OSError:
+        resolved = Path(os.path.abspath(str(path)))
+    if os.name == "nt":
+        # Windows: "D:\\" или "\\server\share\".
+        anchor = resolved.anchor
+        return Path(anchor) if anchor else resolved
+    current = resolved
     while not os.path.ismount(current):
         parent = current.parent
         if parent == current:
@@ -1983,6 +2020,28 @@ def filesystem_type(path: Path) -> str:
             match = re.search(r"File System Personality:\s*(.+)", cp.stdout)
             if match:
                 return match.group(1).strip()
+        return "unknown"
+    if os.name == "nt":
+        try:
+            import ctypes
+
+            root = str(mount)
+            if not root.endswith("\\"):
+                root += "\\"
+            volume = ctypes.create_unicode_buffer(261)
+            fs_name = ctypes.create_unicode_buffer(261)
+            serial = ctypes.c_uint()
+            max_component = ctypes.c_uint()
+            flags = ctypes.c_uint()
+            ok = ctypes.windll.kernel32.GetVolumeInformationW(
+                root, volume, 261,
+                ctypes.byref(serial), ctypes.byref(max_component),
+                ctypes.byref(flags), fs_name, 261,
+            )
+            if ok and fs_name.value:
+                return fs_name.value
+        except (AttributeError, OSError, ValueError):
+            pass
         return "unknown"
     if sys.platform.startswith("linux"):
         cp = run_cmd(["stat", "-f", "-c", "%T", str(mount)], timeout=30)
@@ -2009,7 +2068,12 @@ def check_usb(ctx: Ctx, items: list) -> None:
     mount = find_mount_point(ctx.output)
     low = (ctx.fs_name or "").lower()
     if ctx.args.usb:
-        if mount == Path("/"):
+        system_drive = os.environ.get("SystemDrive", "C:").upper()
+        on_system_drive = (
+            os.name == "nt"
+            and str(mount).upper().rstrip("\\/") == system_drive
+        )
+        if mount == Path("/") or on_system_drive:
             raise M6Error("выходная папка не на съёмном носителе")
         if not any(token in low for token in ("fat", "msdos", "vfat", "exfat")):
             if not ctx.args.allow_any_fs:
@@ -2287,6 +2351,7 @@ def create_ctx(args: argparse.Namespace) -> Ctx:
     has_zscale = "zscale" in filters
     has_subtitles = "subtitles" in filters
     sips = shutil.which("sips") if sys.platform == "darwin" else None
+    magick = shutil.which("magick")
 
     preset = PRESETS[args.preset]
     max_w = args.max_width or preset.max_w
@@ -2354,6 +2419,7 @@ def create_ctx(args: argparse.Namespace) -> Ctx:
         has_zscale=has_zscale,
         has_subtitles_filter=has_subtitles,
         sips=sips,
+        magick=magick,
         ffmpeg_version=ffmpeg_version,
         ffmpeg_major=ffmpeg_major,
         fs_name=fs_name,

@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.3.0 — 2026-11-23
+
+* Windows support: drive-letter mounts, `GetVolumeInformationW` filesystem
+  detection, WinGet/Chocolatey ffmpeg paths, UTF-8 subprocess I/O.
+* Linux support: native filesystem detection and `/media/...` paths.
+* Optional ImageMagick (`magick`) fallback for HEIC/RAW photos on Windows
+  and Linux; macOS still uses `sips`.
+* Cross-platform smoke test in Python replaces the Bash-only test.
+* CI: Ubuntu Python 3.9/3.12, Windows Python 3.12, and smoke tests on
+  Ubuntu and Windows with ffmpeg.
+
 ## 1.2.0 — 2026-11-23
 
 * Default output is `M6` next to the input; `-o` is optional.

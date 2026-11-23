@@ -1,19 +1,20 @@
 SHELL := /bin/bash
+PYTHON ?= python3
 
 .PHONY: help test check smoke clean
 
 help:
-	./m6media.py --help
+	$(PYTHON) m6media.py --help
 
 test:
-	python3 -m unittest discover -s tests -v
+	$(PYTHON) -m unittest discover -s tests -v
 
 check:
-	python3 -m py_compile m6media.py
-	python3 -m unittest discover -s tests -v
+	$(PYTHON) -m py_compile m6media.py
+	$(PYTHON) -m unittest discover -s tests -v
 
 smoke:
-	./tests/smoke_test.sh
+	$(PYTHON) tests/smoke_test.py
 
 clean:
 	rm -rf __pycache__ tests/__pycache__ build dist ./*.egg-info

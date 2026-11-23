@@ -15,6 +15,8 @@
   black screen.
 - FAT32 limits a file to 4 GiB; exFAT usually works and removes the limit.
 - The CLI converts only incompatible files and skips compatible ones.
+- Runs on macOS, Linux, and Windows. On Windows the input is a drive letter
+  (for example `E:\`); output is `E:\M6`.
 
 ## Start here
 
