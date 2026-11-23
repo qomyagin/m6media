@@ -11,6 +11,8 @@
   `CPU / jobs` (`--threads` available).
 * Added agent tooling: `AGENTS.md`, `llms.txt`, architecture and compatibility
   docs, manifest schema, `pyproject.toml`, Makefile, smoke test and CI.
+* Added FAQ, compatibility matrix, English README, SEO metadata guide and
+  `llms.txt` answers for AI search.
 * Added MIT license.
 
 ## Earlier

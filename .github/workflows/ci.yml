@@ -11,8 +11,13 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, macos-latest]
-        python: ["3.9", "3.12"]
+        include:
+          - os: ubuntu-22.04
+            python: "3.9"
+          - os: ubuntu-22.04
+            python: "3.12"
+          - os: macos-14
+            python: "3.12"
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -25,7 +30,7 @@ jobs:
 
   smoke:
     name: smoke (ubuntu, py3.12)
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
