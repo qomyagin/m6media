@@ -27,23 +27,27 @@ is a product requirement.
 2. **Do not add real film titles, release names, torrent links, or personal
    paths.** Use neutral fixtures such as `movie-xvid-1.avi` and
    `movie-h264-1.mkv`. The repository is public.
-3. **Never add secrets.** No tokens, passwords, API keys, cookies, `.env`
+3. **SEO must stay honest.** Use natural headings that match real problems
+   (“Haval M6 does not play AVI/XviD”), never keyword stuffing or invented
+   format support. Update `llms.txt`, `FAQ.md`, and `README.en.md` when the
+   user-facing story changes.
+4. **Never add secrets.** No tokens, passwords, API keys, cookies, `.env`
    files, private keys, or personal email addresses. Commits must not contain
    them either.
-4. **Keep the default contract.** Unless the user explicitly asks otherwise:
+5. **Keep the default contract.** Unless the user explicitly asks otherwise:
    * output directory: `M6` next to the input (created automatically);
    * already-compatible files are skipped;
    * existing target files are skipped with a printed reason;
    * `--force` overwrites targets;
    * `--normalize` processes compatible files too.
-5. **Prefer copy over re-encode.** If the video is H.264 in a supported
+6. **Prefer copy over re-encode.** If the video is H.264 in a supported
    profile and only audio/container is incompatible, use `copy-video` /
    `remux`; never re-encode video just for convenience.
-6. **No new runtime dependencies** outside Python stdlib + `ffmpeg`/`ffprobe`.
+7. **No new runtime dependencies** outside Python stdlib + `ffmpeg`/`ffprobe`.
    `sips` is optional and macOS-only.
-7. **Python 3.9 compatibility.** `from __future__ import annotations` is used;
+8. **Python 3.9 compatibility.** `from __future__ import annotations` is used;
    avoid `match`, `tomllib`, `str.removeprefix`, and PEP 604 unions.
-8. **No network access** in code or tests.
+9. **No network access** in code or tests.
 
 ## Environment
 
@@ -96,8 +100,13 @@ The version is duplicated in `m6media.py` (`APP_VERSION`) and
 | `tests/test_m6media.py` | unit tests for naming, compatibility, planning, default skip, output defaults |
 | `tests/smoke_test.sh` | synthetic end-to-end test with ffmpeg |
 | `docs/ARCHITECTURE.md` | pipeline, data model, action names, exit codes |
+| `docs/COMPATIBILITY.md` | codec/container matrix and symptom → fix table |
+| `docs/SEO.md` | GitHub description/topics and discovery notes |
 | `schema/manifest.schema.json` | JSON Schema for `_m6media/manifest.json` |
-| `README.md` | user manual |
+| `README.md` | user manual (Russian) |
+| `README.en.md` | English manual |
+| `FAQ.md` | Haval M6 incompatible-media FAQ |
+| `CHANGELOG.md` | release notes |
 | `LICENSE` | MIT license |
 | `AGENTS.md` | this file |
 | `llms.txt` | short machine-readable documentation index |

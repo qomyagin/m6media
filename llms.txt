@@ -4,11 +4,27 @@
 > (2023 / M6 Plus) media player. Converts incompatible files to H.264/AAC MP4,
 > MP3, and JPEG; skips files that already work; writes a JSON manifest.
 
+## Problem / short answer
+
+- Haval M6 (2023 / M6 Plus) may list an AVI file but fail to decode it when
+  the video is MPEG-4 Part 2 (XviD/DivX). Convert it to H.264 Main@4.0 +
+  AAC-LC in MP4.
+- AC3/DTS audio in MP4 is unreliable; AAC-LC stereo is the safe target.
+  AC3 in MKV often works.
+- HDR/10-bit H.264, unusual profiles, and very high bitrates may show a
+  black screen.
+- FAT32 limits a file to 4 GiB; exFAT usually works and removes the limit.
+- The CLI converts only incompatible files and skips compatible ones.
+
 ## Start here
 
 - [AGENTS.md](AGENTS.md): canonical AI-agent instructions and invariants.
 - [README.md](README.md): user manual (Russian).
+- [FAQ.md](FAQ.md): Haval M6 incompatible-media FAQ (Russian + English).
+- [docs/COMPATIBILITY.md](docs/COMPATIBILITY.md): codec/container matrix.
+- [README.en.md](README.en.md): English manual.
 - [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md): pipeline, data model, actions.
+- [docs/SEO.md](docs/SEO.md): GitHub metadata and discovery notes.
 - [schema/manifest.schema.json](schema/manifest.schema.json): manifest schema.
 
 ## Commands

@@ -5,11 +5,16 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "m6media"
 version = "1.2.0"
-description = "Prepare and convert video, music and photos for the Haval M6 (2023) media player"
+description = "Fix Haval M6 (2023) USB playback: convert AVI/XviD, AC3 and incompatible MKV to H.264/AAC MP4; prepare music and photos"
 readme = "README.md"
 license = { text = "MIT" }
 requires-python = ">=3.9"
-keywords = ["haval", "m6", "ffmpeg", "media", "converter"]
+keywords = [
+    "haval", "haval-m6", "haval m6", "m6-plus", "haval m6 2023",
+    "car-media", "car-media-player", "usb", "flash-drive",
+    "video-converter", "ffmpeg", "xvid", "divx", "avi", "mkv", "mp4",
+    "h264", "aac", "ac3", "fat32", "exfat",
+]
 classifiers = [
     "Environment :: Console",
     "License :: OSI Approved :: MIT License",
