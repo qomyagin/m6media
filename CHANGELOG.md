@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.3.1 — 2026-11-23
+
+* Added Kazakh documentation: `README.kk.md` and `FAQ.kk.md`.
+* Added Uzbek documentation: `README.uz.md` and `FAQ.uz.md`.
+* Added a language switcher to the Russian, English and FAQ pages.
+* Linked translations from `llms.txt`, `docs/SEO.md`, and `AGENTS.md`.
+
 ## 1.3.0 — 2026-11-23
 
 * Windows support: drive-letter mounts, `GetVolumeInformationW` filesystem

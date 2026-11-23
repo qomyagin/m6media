@@ -81,6 +81,9 @@ gh repo edit USER/REPO \
 | [FAQ.md](../FAQ.md) | «Haval M6 не видит фильм», «почему AVI не играет», «нет звука AC3» |
 | [docs/COMPATIBILITY.md](COMPATIBILITY.md) | «какие форматы поддерживает Haval M6», «XviD M6» |
 | [README.en.md](../README.en.md) | англоязычные запросы |
+| [README.kk.md](../README.kk.md) | казахскоязычные запросы |
+| [README.uz.md](../README.uz.md) | узбекоязычные запросы |
+| [FAQ.kk.md](../FAQ.kk.md) / [FAQ.uz.md](../FAQ.uz.md) | локальные FAQ |
 | [README.md](../README.md) | общий обзор и установка |
 
 GitHub хорошо индексирует markdown-файлы внутри репозитория, а поисковые

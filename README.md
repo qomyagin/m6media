@@ -4,6 +4,8 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Python 3.9+](https://img.shields.io/badge/python-3.9%2B-blue.svg)](pyproject.toml)
 
+**Язык:** Русский · [English](README.en.md) · [Қазақша](README.kk.md) · [Oʻzbekcha](README.uz.md)
+
 > **Haval M6 не видит фильм на флешке, не воспроизводит AVI/XviD или MKV
 > с AC3?** Обычно дело не в exFAT и не в имени файла, а в кодеке: M6
 > заявляет AVI как контейнер, но не декодирует MPEG-4 Part 2 (XviD/DivX).
@@ -650,7 +652,10 @@ python3 -m unittest discover -s tests -v
   действия и коды возврата;
 * [FAQ.md](FAQ.md) и [docs/COMPATIBILITY.md](docs/COMPATIBILITY.md) —
   вопросы и матрица совместимости;
-* [README.en.md](README.en.md) — английская версия;
+* [README.en.md](README.en.md), [README.kk.md](README.kk.md),
+  [README.uz.md](README.uz.md) — английская, казахская и узбекская версии;
+* [FAQ.kk.md](FAQ.kk.md), [FAQ.uz.md](FAQ.uz.md) — FAQ на казахском и
+  узбекском;
 * [docs/SEO.md](docs/SEO.md) — метаданные GitHub и стратегия поиска;
 * [schema/manifest.schema.json](schema/manifest.schema.json) — JSON Schema
   для `_m6media/manifest.json`;

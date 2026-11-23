@@ -4,6 +4,8 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Python 3.9+](https://img.shields.io/badge/python-3.9%2B-blue.svg)](pyproject.toml)
 
+**Language:** [Русский](README.md) · English · [Қазақша](README.kk.md) · [Oʻzbekcha](README.uz.md)
+
 **Haval M6 does not play AVI/XviD, MKV with AC3, or some files from a USB
 flash drive?** The container may be supported while the codec is not. This
 CLI converts only the incompatible files to **H.264 Main@4.0 + AAC-LC in

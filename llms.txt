@@ -25,6 +25,10 @@
 - [FAQ.md](FAQ.md): Haval M6 incompatible-media FAQ (Russian + English).
 - [docs/COMPATIBILITY.md](docs/COMPATIBILITY.md): codec/container matrix.
 - [README.en.md](README.en.md): English manual.
+- [README.kk.md](README.kk.md): Kazakh manual.
+- [README.uz.md](README.uz.md): Uzbek manual.
+- [FAQ.kk.md](FAQ.kk.md): Kazakh FAQ.
+- [FAQ.uz.md](FAQ.uz.md): Uzbek FAQ.
 - [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md): pipeline, data model, actions.
 - [docs/SEO.md](docs/SEO.md): GitHub metadata and discovery notes.
 - [schema/manifest.schema.json](schema/manifest.schema.json): manifest schema.

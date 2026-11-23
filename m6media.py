@@ -43,7 +43,7 @@ from pathlib import Path
 from typing import Optional
 
 APP_NAME = "m6media"
-APP_VERSION = "1.3.0"
+APP_VERSION = "1.3.1"
 
 # ---------------------------------------------------------------------------
 # Константы

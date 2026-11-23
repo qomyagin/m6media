@@ -109,7 +109,11 @@ The version is duplicated in `m6media.py` (`APP_VERSION`) and
 | `schema/manifest.schema.json` | JSON Schema for `_m6media/manifest.json` |
 | `README.md` | user manual (Russian) |
 | `README.en.md` | English manual |
-| `FAQ.md` | Haval M6 incompatible-media FAQ |
+| `README.kk.md` | Kazakh manual |
+| `README.uz.md` | Uzbek manual |
+| `FAQ.md` | Haval M6 incompatible-media FAQ (Russian) |
+| `FAQ.kk.md` | Kazakh FAQ |
+| `FAQ.uz.md` | Uzbek FAQ |
 | `CHANGELOG.md` | release notes |
 | `LICENSE` | MIT license |
 | `AGENTS.md` | this file |
