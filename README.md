@@ -1,5 +1,9 @@
 # m6media — конвертер видео для Haval M6 (2023): AVI/XviD, AC3, USB
 
+[![tests](https://github.com/qomyagin/m6media/actions/workflows/ci.yml/badge.svg)](https://github.com/qomyagin/m6media/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![Python 3.9+](https://img.shields.io/badge/python-3.9%2B-blue.svg)](pyproject.toml)
+
 > **Haval M6 не видит фильм на флешке, не воспроизводит AVI/XviD или MKV
 > с AC3?** Обычно дело не в exFAT и не в имени файла, а в кодеке: M6
 > заявляет AVI как контейнер, но не декодирует MPEG-4 Part 2 (XviD/DivX).
