@@ -370,5 +370,14 @@ class FfmpegCompatibilityTests(unittest.TestCase):
         self.assertIn("-fps_mode", cmd)
         self.assertNotIn("-vsync", cmd)
 
+
+class PlatformTests(unittest.TestCase):
+    @unittest.skipUnless(__import__("os").name == "nt", "Windows only")
+    def test_windows_filesystem_detection(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmp:
+            fs = m6.filesystem_type(Path(tmp)).upper()
+            self.assertIn(fs, {"NTFS", "FAT32", "FAT", "EXFAT"})
+
 if __name__ == "__main__":
     unittest.main()

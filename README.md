@@ -589,7 +589,7 @@ python3 -m unittest discover -s tests -v
 
 ## Что проверено
 
-* 38 юнит-тестов (`python3 -m unittest discover -s tests -v`).
+* 39 юнит-тестов (`python3 -m unittest discover -s tests -v`).
 * Реальные фрагменты:
   * AVI/XviD + AC3 → MP4/H.264 + AAC (перекодирование);
   * MKV/H.264 + AC3 → MP4 с копированием видео и AAC-звуком;
