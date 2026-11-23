@@ -529,7 +529,7 @@ python3 -m unittest discover -s tests -v
 
 ## Что проверено
 
-* 34 юнит-теста (`python3 -m unittest discover -s tests -v`).
+* 35 юнит-тестов (`python3 -m unittest discover -s tests -v`).
 * Реальные фрагменты:
   * AVI/XviD + AC3 → MP4/H.264 + AAC (перекодирование);
   * MKV/H.264 + AC3 → MP4 с копированием видео и AAC-звуком;
@@ -567,9 +567,44 @@ python3 m6media.py "файл" --diagnose
 
 ---
 
-## Лицензия и благодарности
+## Для AI-агентов
 
-Скрипт — свободный инструмент для личного использования. Форматы сверены
-с руководством пользователя Haval M6 Plus (2023–2026), страница 116
+Репозиторий подготовлен для работы кодинг-агентов:
+
+* [AGENTS.md](AGENTS.md) — канонические инструкции, инварианты и правила
+  безопасности;
+* [llms.txt](llms.txt) — краткий машинно-читаемый индекс;
+* [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) — пайплайн, модель данных,
+  действия и коды возврата;
+* [schema/manifest.schema.json](schema/manifest.schema.json) — JSON Schema
+  для `_m6media/manifest.json`;
+* [CLAUDE.md](CLAUDE.md) и
+  [.github/copilot-instructions.md](.github/copilot-instructions.md) —
+  короткие точки входа для конкретных агентов.
+
+Проверки:
+
+```bash
+make check    # py_compile + unit-тесты, ffmpeg не нужен
+make test     # только unit-тесты
+make smoke    # end-to-end на синтетических 2-секундных клипах, нужен ffmpeg
+```
+
+`pyproject.toml` позволяет установить CLI как `m6media`:
+
+```bash
+python3 -m pip install -e .
+m6media --help
+```
+
+Правило репозитория: не добавлять настоящие названия фильмов, релизов,
+личные пути, секреты и медиафайлы. Для тестов — только синтетические
+`lavfi`-клипы и имена вида `movie-xvid-1.avi`.
+
+## Благодарности
+
+Скрипт — инструмент для личного использования; файл лицензии в репозитории
+пока не выбран. Форматы сверены с руководством пользователя Haval M6 Plus
+(2023–2026), страница 116
 ([источник](https://mcgrp.ru/files/viewer/1112377/117)).
 Спасибо ffmpeg, x264, LAME и проекту Homebrew.

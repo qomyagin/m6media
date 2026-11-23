@@ -1,8 +1,15 @@
 __pycache__/
 *.py[cod]
+.venv/
+build/
+dist/
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
 m6-ready/
 M6/
 test-out/
+tmp/
 *.part.mp4
 *.part.mkv
 *.part.jpg

@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "m6media"
+version = "1.2.0"
+description = "Prepare and convert video, music and photos for the Haval M6 (2023) media player"
+readme = "README.md"
+requires-python = ">=3.9"
+keywords = ["haval", "m6", "ffmpeg", "media", "converter"]
+classifiers = [
+    "Environment :: Console",
+    "Operating System :: MacOS",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Topic :: Multimedia :: Video :: Conversion",
+    "Topic :: Multimedia :: Sound/Audio :: Conversion",
+]
+dependencies = []
+
+[project.scripts]
+m6media = "m6media:main"
+
+[tool.setuptools]
+py-modules = ["m6media"]

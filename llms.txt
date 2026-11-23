@@ -1,0 +1,30 @@
+# m6media
+
+> Python 3.9+ CLI that prepares video, music, and photos for the Haval M6
+> (2023 / M6 Plus) media player. Converts incompatible files to H.264/AAC MP4,
+> MP3, and JPEG; skips files that already work; writes a JSON manifest.
+
+## Start here
+
+- [AGENTS.md](AGENTS.md): canonical AI-agent instructions and invariants.
+- [README.md](README.md): user manual (Russian).
+- [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md): pipeline, data model, actions.
+- [schema/manifest.schema.json](schema/manifest.schema.json): manifest schema.
+
+## Commands
+
+- `python3 -m unittest discover -s tests -v` — unit tests, no ffmpeg needed.
+- `make check` — compile + unit tests.
+- `make smoke` — synthetic end-to-end test; requires ffmpeg.
+- `./m6media.py --help` — full CLI reference.
+- `./m6media.py /Volumes/USB --dry-run` — plan only, no writes.
+- `./m6media.py /Volumes/USB` — convert what is needed into `/Volumes/USB/M6`.
+
+## Contract
+
+- Never modify source media.
+- Default output directory: `M6` next to the input.
+- Already-compatible files are skipped; `--normalize` processes them.
+- Existing targets are skipped with a printed reason; `--force` overwrites.
+- Target video: H.264 Main@4.0, yuv420p, AAC-LC stereo, MP4 (or MKV).
+- No secrets, real film titles, personal paths, or media files in the repo.

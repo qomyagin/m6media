@@ -1,0 +1,407 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/m6media/manifest.schema.json",
+  "title": "m6media manifest",
+  "description": "Report written to OUT/_m6media/manifest.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "app",
+    "version",
+    "created",
+    "ffmpeg",
+    "settings",
+    "summary",
+    "items"
+  ],
+  "properties": {
+    "app": {
+      "const": "m6media"
+    },
+    "version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "created": {
+      "type": "string",
+      "minLength": 1
+    },
+    "ffmpeg": {
+      "type": "string",
+      "minLength": 1
+    },
+    "settings": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "preset",
+        "container",
+        "mode",
+        "fat32"
+      ],
+      "properties": {
+        "preset": {
+          "type": "string"
+        },
+        "container": {
+          "enum": [
+            "mp4",
+            "mkv"
+          ]
+        },
+        "normalize": {
+          "type": "boolean"
+        },
+        "jobs": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "threads": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "mode": {
+          "enum": [
+            "auto",
+            "copy",
+            "encode"
+          ]
+        },
+        "fat32": {
+          "enum": [
+            "auto",
+            "fit",
+            "split",
+            "off"
+          ]
+        },
+        "max_file_size": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "max_width": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "max_height": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "fps": {
+          "type": "number",
+          "minimum": 0
+        },
+        "crf": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 51
+        },
+        "video_maxrate": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "audio_format": {
+          "enum": [
+            "mp3",
+            "aac",
+            "copy"
+          ]
+        },
+        "audio_bitrate": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "photo_max": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "photo_quality": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100
+        },
+        "keep_names": {
+          "type": "boolean"
+        },
+        "filesystem": {
+          "type": "string"
+        }
+      }
+    },
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "total",
+        "ok",
+        "failed",
+        "skipped",
+        "bytes_out"
+      ],
+      "properties": {
+        "total": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "ok": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "failed": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "skipped": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "bytes_out": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "items": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/item"
+      }
+    }
+  },
+  "$defs": {
+    "output": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "size"
+      ],
+      "properties": {
+        "path": {
+          "type": "string"
+        },
+        "size": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        }
+      }
+    },
+    "sourceMedia": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "format",
+        "duration",
+        "size",
+        "video",
+        "audio"
+      ],
+      "properties": {
+        "format": {
+          "type": "string"
+        },
+        "duration": {
+          "type": "number",
+          "minimum": 0
+        },
+        "size": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "bit_rate": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "chapters": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "video": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "additionalProperties": true,
+          "properties": {
+            "codec": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "profile": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "level": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "pix_fmt": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "width": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "height": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "rotation": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "fps": {
+              "type": [
+                "number",
+                "null"
+              ]
+            }
+          }
+        },
+        "audio": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "additionalProperties": true,
+          "properties": {
+            "codec": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "channels": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "sample_rate": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "bit_rate": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "item": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "index",
+        "source",
+        "type",
+        "action",
+        "status",
+        "outputs",
+        "parts",
+        "reasons",
+        "notes",
+        "error",
+        "source_media"
+      ],
+      "properties": {
+        "index": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "source": {
+          "type": "string",
+          "minLength": 1
+        },
+        "type": {
+          "enum": [
+            "video",
+            "audio",
+            "image",
+            "unknown"
+          ]
+        },
+        "action": {
+          "enum": [
+            "remux",
+            "copy-video",
+            "transcode",
+            "transcode-audio-only",
+            "remux-audio",
+            "image",
+            "copy",
+            "skip-compatible",
+            "skip-existing",
+            "error"
+          ]
+        },
+        "status": {
+          "enum": [
+            "ok",
+            "failed",
+            "skipped",
+            "planned"
+          ]
+        },
+        "outputs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/output"
+          }
+        },
+        "parts": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "reasons": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "notes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "error": {
+          "type": "string"
+        },
+        "source_media": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/sourceMedia"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

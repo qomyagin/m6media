@@ -329,5 +329,12 @@ class ExistingSkipTests(unittest.TestCase):
             )
             self.assertEqual(m6.mark_existing_skips([item], ctx), [])
 
+
+class RepoTests(unittest.TestCase):
+    def test_version_matches_pyproject(self):
+        root = Path(__file__).resolve().parents[1]
+        pyproject = (root / "pyproject.toml").read_text(encoding="utf-8")
+        self.assertIn(f'version = "{m6.APP_VERSION}"', pyproject)
+
 if __name__ == "__main__":
     unittest.main()
