@@ -566,6 +566,7 @@ class Ctx:
     has_subtitles_filter: bool = False
     sips: Optional[str] = None
     ffmpeg_version: str = ""
+    ffmpeg_major: int = 0
     fs_name: str = ""
 
     def progress(self, label: str, pct: int) -> None:
@@ -1116,7 +1117,7 @@ def build_video_cmd(
         "-profile:v", H264_OUTPUT_PROFILE, "-level:v", H264_OUTPUT_LEVEL,
         "-pix_fmt", "yuv420p",
         "-r", item.target_fps or str(int(ctx.args.fps or 30)),
-        "-fps_mode", "cfr",
+        ("-fps_mode" if ctx.ffmpeg_major >= 5 else "-vsync"), "cfr",
     ]
     if item.info and item.info.audio:
         cmd += [
@@ -2275,6 +2276,8 @@ def create_ctx(args: argparse.Namespace) -> Ctx:
         )
     version_cp = run_cmd([ffmpeg, "-version"], timeout=30)
     ffmpeg_version = version_cp.stdout.splitlines()[0] if version_cp.stdout else "ffmpeg"
+    version_match = re.search(r"ffmpeg version\s+(\d+)", ffmpeg_version)
+    ffmpeg_major = int(version_match.group(1)) if version_match else 0
     encoders = run_cmd([ffmpeg, "-hide_banner", "-encoders"], timeout=30).stdout
     if "libx264" not in encoders:
         raise M6Error("в ffmpeg нет libx264 — установите полную сборку ffmpeg")
@@ -2352,6 +2355,7 @@ def create_ctx(args: argparse.Namespace) -> Ctx:
         has_subtitles_filter=has_subtitles,
         sips=sips,
         ffmpeg_version=ffmpeg_version,
+        ffmpeg_major=ffmpeg_major,
         fs_name=fs_name,
     )
 

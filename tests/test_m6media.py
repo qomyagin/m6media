@@ -26,6 +26,8 @@ def make_ctx(**overrides):
         audio_bitrate=256_000,
         container="mp4",
         x264_preset="medium",
+        threads=2,
+        tonemap=False,
         force=False,
     )
     for key, value in overrides.items():
@@ -341,6 +343,32 @@ class RepoTests(unittest.TestCase):
         text = (root / "LICENSE").read_text(encoding="utf-8")
         self.assertIn("MIT License", text)
         self.assertIn("Copyright (c) 2026 m6media contributors", text)
+
+
+class FfmpegCompatibilityTests(unittest.TestCase):
+    def test_ffmpeg4_uses_vsync(self):
+        ctx = make_ctx()
+        ctx.ffmpeg_major = 4
+        item = m6.PlanItem(
+            1, Path("input.mkv"), "video", make_media(), action="transcode",
+            target_fps="24",
+        )
+        item.cap = 8_000_000
+        cmd = m6.build_video_cmd(ctx, item, Path("/tmp/out.mp4"))
+        self.assertIn("-vsync", cmd)
+        self.assertNotIn("-fps_mode", cmd)
+
+    def test_ffmpeg5_uses_fps_mode(self):
+        ctx = make_ctx()
+        ctx.ffmpeg_major = 5
+        item = m6.PlanItem(
+            1, Path("input.mkv"), "video", make_media(), action="transcode",
+            target_fps="24",
+        )
+        item.cap = 8_000_000
+        cmd = m6.build_video_cmd(ctx, item, Path("/tmp/out.mp4"))
+        self.assertIn("-fps_mode", cmd)
+        self.assertNotIn("-vsync", cmd)
 
 if __name__ == "__main__":
     unittest.main()

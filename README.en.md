@@ -90,7 +90,7 @@ common reason an AVI file "does not show up".
 ## Development
 
 ```bash
-make check    # compile + 36 unit tests, no ffmpeg needed
+make check    # compile + 38 unit tests, no ffmpeg needed
 make smoke    # synthetic end-to-end test, requires ffmpeg
 ```
 
