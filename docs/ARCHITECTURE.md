@@ -176,8 +176,8 @@ A single failing file does not abort the batch. `execute_item()` catches
   directly; no ffmpeg or media files needed.
 * `tests/smoke_test.sh` generates 2-second `lavfi` clips and exercises the
   default skip, transcode, check, rerun-skip, and `--force` paths.
-* CI runs unit tests on Linux/macOS Python 3.9/3.12 and the smoke test on
-  Ubuntu with ffmpeg.
+* CI runs unit tests on Linux Python 3.9/3.12 and the smoke test on
+  Ubuntu with ffmpeg. macOS is tested locally with `sips`.
 
 ## Extension points
 
