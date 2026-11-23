@@ -3,6 +3,7 @@
 Canonical instructions for AI coding agents working on this repository.
 Read this file before changing code. `README.md` is the user-facing manual
 (in Russian); `docs/ARCHITECTURE.md` explains the internals.
+License: MIT (see `LICENSE`).
 
 ## What this project is
 
@@ -97,6 +98,7 @@ The version is duplicated in `m6media.py` (`APP_VERSION`) and
 | `docs/ARCHITECTURE.md` | pipeline, data model, action names, exit codes |
 | `schema/manifest.schema.json` | JSON Schema for `_m6media/manifest.json` |
 | `README.md` | user manual |
+| `LICENSE` | MIT license |
 | `AGENTS.md` | this file |
 | `llms.txt` | short machine-readable documentation index |
 | `CLAUDE.md` | Claude Code entry point |

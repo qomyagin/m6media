@@ -336,5 +336,11 @@ class RepoTests(unittest.TestCase):
         pyproject = (root / "pyproject.toml").read_text(encoding="utf-8")
         self.assertIn(f'version = "{m6.APP_VERSION}"', pyproject)
 
+    def test_mit_license(self):
+        root = Path(__file__).resolve().parents[1]
+        text = (root / "LICENSE").read_text(encoding="utf-8")
+        self.assertIn("MIT License", text)
+        self.assertIn("Copyright (c) 2026 m6media contributors", text)
+
 if __name__ == "__main__":
     unittest.main()

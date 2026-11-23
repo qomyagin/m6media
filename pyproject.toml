@@ -7,10 +7,12 @@ name = "m6media"
 version = "1.2.0"
 description = "Prepare and convert video, music and photos for the Haval M6 (2023) media player"
 readme = "README.md"
+license = { text = "MIT" }
 requires-python = ">=3.9"
 keywords = ["haval", "m6", "ffmpeg", "media", "converter"]
 classifiers = [
     "Environment :: Console",
+    "License :: OSI Approved :: MIT License",
     "Operating System :: MacOS",
     "Operating System :: POSIX :: Linux",
     "Programming Language :: Python :: 3",

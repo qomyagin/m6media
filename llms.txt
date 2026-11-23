@@ -20,6 +20,10 @@
 - `./m6media.py /Volumes/USB --dry-run` — plan only, no writes.
 - `./m6media.py /Volumes/USB` — convert what is needed into `/Volumes/USB/M6`.
 
+## License
+
+MIT. See [LICENSE](LICENSE).
+
 ## Contract
 
 - Never modify source media.
